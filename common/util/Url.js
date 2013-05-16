@@ -3,8 +3,8 @@
  * @namespace Common.util
  * @module Common
  * @extends K.Base
- * @return {Workspace.Start}
- * @description The start class for the workspace
+ * @return {Common.util.Url}
+ * @description A query string parser class
  */
 K.define('Common.util.Url', {
     extend: 'K.Base',
@@ -232,7 +232,7 @@ K.define('Common.util.Url', {
     /**
      * Parse the url to the class parameters
      * @method parseUri
-     * @param {String|Location} url The url to parse
+     * @param {String|Location} [url] The url to parse
      * @returns {Common.util.Url}
      * @chainable
      */
@@ -240,6 +240,7 @@ K.define('Common.util.Url', {
         var me = this,
             _isEmpty = K.isEmpty
 
+        // Set the url property to window.location if not set
         me.url = _isEmpty(me.url) ? window.location : me.url;
 
         var _url = _isEmpty(url) ? me.url : url,
@@ -247,13 +248,19 @@ K.define('Common.util.Url', {
             _m = _statics[me.strictMode ? 'strict' : 'loose'].exec(_url),
             _i = 14;
 
+        // Set the url property based on the url sent in, property or window.location
         me.url = _url;
 
+        // Set the properties of the class to empty or the found value from the RegEx
         while (_i--) me[_statics.key[_i]] = _m[_i] || '';
 
-        me[_statics.queryKeyName] = {};
+        // Set the query name of the query key object
+        var _queryKeyName = _statics.queryKeyName;
+        me[_queryKeyName] = {};
+
+        // Set the key values
         me[_statics.key[12]].replace(_statics.parser, function ($0, $1, $2) {
-            if ($1) me[_statics.queryKeyName][$1] = $2;
+            if ($1) me[_queryKeyName][$1] = $2;
         });
 
         return me;
