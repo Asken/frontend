@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>UNOPS Geocoder</title>
+
+    <script type="text/javascript" src="lib/krush/krush.js"></script>
+    <script type="text/javascript" src="lib/jquery/jquery-1.9.1.min.js"></script>
+
+    <script>
+        // Define the application to run and the namespace name for the loader and the start class to be loaded properly...
+        // TODO: Read from url to get application
+        var application = 'workspace',
+            appNameSpace = application.charAt(0).toUpperCase() + application.slice(1);
+
+        // Start the application when dom is ready
+        $(document).ready(function() {
+            // Set the loader settings
+            K.core.util.Loader.configure({
+                caching: false,
+                // Working on util so only cache bust that... (just an example for now, batch and closure compilation will be implemented later)
+                paths: [{
+                    prefix: appNameSpace,
+                    path: 'apps/'
+                }]
+            });
+
+            K.create(appNameSpace + '.Start');
+        });
+    </script>
+</head>
+<body>
+Loading message...
+</body>
+</html>
