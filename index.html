@@ -21,8 +21,14 @@
                 paths: [{
                     prefix: appNameSpace,
                     path: 'apps/'
+                }, {
+                    prefix: 'Common',
+                    path: ''
                 }]
             });
+
+            // Make sure the Url class is loaded
+            K.log(K.ensure('Common.util.Url').options);
 
             K.create(appNameSpace + '.Start');
         });
