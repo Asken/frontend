@@ -27,13 +27,21 @@ K.define('Map.Start', {
     initMap: function() {
         var me = this;
 
+        $('#loader').hide();
+
         me.map = K.create('Common.widget.Map', {
-            style: 'width: 100%; height: 200px',
+            style: 'width: 100%; height: 400px',
             autoLoadScripts: false/*),
             plugins: [
                 'Common.plugin.GoogleMap'    // default so actually doesn't have to be specified. throws an error if no valid library has been loaded
             ]*/
         }).addTo('#app');
+
+        me.map.plotData([
+            { lat: 55.6750, lon: 12.5687 }
+        ]);
+
+        me.map.clear();
 
         K.log('Current map type: ' + me.map.getRendererType());
     }

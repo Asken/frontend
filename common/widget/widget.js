@@ -16,6 +16,9 @@ K.define('Common.widget.Widget', {
     init: function(config) {
         var me = this;
 
+        if (typeof jQuery === 'undefined')
+            throw new Error('jquery is needed for this class (' + me.$className + ') to load');
+
         me.base(config);
 
         me.el = K.createEl('div');

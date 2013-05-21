@@ -60,3 +60,49 @@ test('Common.util.Url', function() {
 
     ok(url.url === 'http://username:password@www.example.com:8080/path1/path2/index.html?q1=1&q2=2#anchor', 'Just running parseUri will keep the current url');
 });
+
+test('Common.widget.Map', function() {
+    // Set the loader settings
+    K.core.util.Loader.configure({
+        caching: false,
+        // Working on util so only cache bust that... (just an example for now, batch and closure compilation will be implemented later)
+        paths: [{
+            prefix: 'Common',
+            path: '../'
+        }]
+    });
+
+    // Load the class
+    K.ensure('Common.widget.Map');
+    ok(!K.isEmpty(Common.widget.Map), 'The loader is configured correctly to test the Map class.');
+
+    var div = document.createElement('div');
+    div.id = 'map';
+    document.getElementsByTagName('body')[0].appendChild(div);
+    var map1 = K.create('Common.widget.Map', {
+
+    }).addTo('map');
+
+    ok(map1.test(), 'Since google maps javascript is loaded, the test function is true by having the GoogleMap plugin load automatically');
+
+    ok(K.isArray(map1.markers) && map1.markers.length === 0, 'Markers is an array of length 0');
+
+    var map2 = K.create('Common.widget.Map', {
+        style: 'height: 100px; width: 500px;'
+    }).addTo('map');
+
+    ok($(map2.el).css('height') === '100px', 'Height is 100px');
+
+    map2.plotData([
+        { lat: 55.6750, lon: 12.5687 }
+    ]);
+
+    ok(map2.markers.length === 1, 'Added one marker');
+
+    map2.clear();
+
+    ok(map2.markers.length === 0, 'Cleared the map from markers');
+
+    // Clean up fixture
+    div.parentElement.removeChild(div);
+});
