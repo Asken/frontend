@@ -6,10 +6,12 @@
     <script type="text/javascript" src="lib/krush/krush.js"></script>
     <script type="text/javascript" src="lib/jquery/jquery-1.9.1.min.js"></script>
 
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+
     <script>
         // Define the application to run and the namespace name for the loader and the start class to be loaded properly...
         // TODO: Read from url to get application
-        var application = 'workspace',
+        var application = 'map',
             appNameSpace = application.charAt(0).toUpperCase() + application.slice(1);
 
         // Start the application when dom is ready
@@ -27,14 +29,12 @@
                 }]
             });
 
-            // Make sure the Url class is loaded
-            K.log(K.ensure('Common.util.Url').options);
-
             K.create(appNameSpace + '.Start');
         });
     </script>
 </head>
 <body>
 Loading message...
+<div id="app"></div>
 </body>
 </html>
