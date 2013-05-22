@@ -32,20 +32,30 @@ K.define('Map.Start', {
         me.url = K.create('Common.util.Url');
         var dataUrl = me.url.queryKey.dataUrl || '',
             dataRoot = me.url.queryKey.dataRoot || '';
+
+        // test url
         // ?dataUrl=resources/data/map.json&dataRoot=data
+
         me.map = K.create('Common.widget.Map', {
-            style: 'width: 100%; height: 600px',
+            style: 'width: 100%; height: 400px',
+            zoom: 3,
             dataUrl: dataUrl,
             dataRoot: dataRoot,
             autoLoadScripts: false,
             autoFitBounds: true
         }).addTo('#app');
 
-        /*me.map.plotData([
-            { lat: 55.6750, lng: 12.5687 }
-        ]);*/
+        me.map2 = K.create('Common.widget.Map', {
+            style: 'width: 100%; height: 400px',
+            zoom: 4,
+            autoLoadScripts: false
+        }).addTo('#app');
 
-        //me.map.fitBounds();
+        me.map2.plotData([
+            { lat: 55.6750, lng: 12.5687 }
+        ]);
+
+        me.map2.fitBounds();
 
         //me.map.clear();
 

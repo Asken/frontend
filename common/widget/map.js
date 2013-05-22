@@ -22,6 +22,15 @@ K.define('Common.widget.Map', {
     renderer: null,
 
     /**
+     * Zoom for the map
+     * @method zoom
+     * @type Number
+     * @default 3
+     * @since 1.0.0
+     */
+    zoom: 3,
+
+    /**
      * The points to plot to the map
      * @property data
      * @type Array

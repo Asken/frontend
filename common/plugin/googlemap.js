@@ -2,11 +2,11 @@ K.definePlugin('Common.plugin.GoogleMap', function() {
     var me = this;
 
     me.markers = [];
-    //me.bounds = new google.maps.LatLngBounds();
-    me.bounds = new google.maps.LatLngBounds(
-        new google.maps.LatLng(66, -176),
-        new google.maps.LatLng(-41, -177)
-    );
+    me.bounds = new google.maps.LatLngBounds();
+    /*me.bounds = new google.maps.LatLngBounds(
+        new google.maps.LatLng(61, -164),
+        new google.maps.LatLng(-40, 168)
+    );*/
 
     me.test = function() {
         return true;
@@ -16,8 +16,8 @@ K.definePlugin('Common.plugin.GoogleMap', function() {
         var me = this;
 
         var mapOptions = {
-            zoom: 4,
-            //center: new google.maps.LatLng(44.1257288, -33.0110524),
+            zoom: me.zoom,
+            center: new google.maps.LatLng(44.1257288, -33.0110524),
             mapTypeId: google.maps.MapTypeId.ROADMAP
         };
 
@@ -46,7 +46,7 @@ K.definePlugin('Common.plugin.GoogleMap', function() {
         });
 
         me.markers.push(marker);
-        //me.bounds.extend(location);
+        me.bounds.extend(location);
 
         return me;
     };
@@ -83,7 +83,7 @@ K.definePlugin('Common.plugin.GoogleMap', function() {
         });
 
         me.markers = [];
-        //me.bounds = new google.maps.LatLngBounds();
+        me.bounds = new google.maps.LatLngBounds();
 
         return me;
     }
