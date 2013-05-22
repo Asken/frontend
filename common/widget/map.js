@@ -2,7 +2,8 @@ K.define('Common.widget.Map', {
     extend: 'Common.widget.Widget',
 
     requires: [
-        'Common.widget.Widget'
+        'Common.widget.Widget',
+        'Common.util.Template'
     ],
 
     /**
@@ -28,6 +29,33 @@ K.define('Common.widget.Map', {
      * @since 1.0.0
      */
     data: null,
+
+    /**
+     * An url to use to load points data from
+     * @property dataUrl
+     * @type String
+     * @default ''
+     * @since 1.0.0
+     */
+    dataUrl: '',
+
+    /**
+     * The path to the array of markers to add
+     * @property dataRoot
+     * @type String
+     * @default ''
+     * @since 1.0.0
+     */
+    dataRoot: '',
+
+    /**
+     * If set to true the map will be made sure to fit the points within the map view
+     * @property autoFitBounds
+     * @type Boolean
+     * @default false
+     * @since 1.0.0
+     */
+    autoFitBounds: false,
 
     /**
      * The markers currently added to the map
@@ -77,6 +105,35 @@ K.define('Common.widget.Map', {
 
         if (me.test()) {
             me.renderMap();
+
+            if (!K.isEmpty(me.dataUrl)) {
+                var xhr = K.util.Loader.getXhr();
+
+                xhr.open('GET', me.dataUrl, true);
+
+                xhr.onreadystatechange = function(obj) {
+                    // Don't forget the scope is the xhr object in here...
+                    var readyState = this.readyState,
+                        status = this.status;
+
+                    if (readyState === 4) {
+                        if (status === 200) {
+                            me.data = K.parse(xhr.responseText);
+                            if (!K.isEmpty(me.dataRoot)) {
+                                me.data = K.query(me.dataRoot, me.data);
+                                me.plotData();
+
+                                if (me.autoFitBounds)
+                                    me.fitBounds();
+                            }
+                        }
+                        else
+                            throw new Error('Failure: ' + status);
+                    }
+                }
+
+                xhr.send(null);
+            }
         }
     },
 
@@ -95,21 +152,31 @@ K.define('Common.widget.Map', {
     /**
      * Render map
      * @method renderMap
-     * @return {Common.widget.Map}
+     * @return {Common.widget.Map} The map instance
      * @chainable
      * @abstract
      * @since 1.0.0
      */
     renderMap: function() {
-        var me = this;
-
         throw new Error('Common.widget.Map.renderMap is not defined. Either implement using inheritance or define a map plugin where the method is defined');
+    },
+
+    /**
+     * Fit the map around the markers added to the map
+     * @method fitBounds
+     * @return {Common.widget.Map} The map instance
+     * @chainable
+     * @abstract
+     * @since 1.0.0
+     */
+    fitBounds: function() {
+        throw new Error('Common.widget.Map.fitBounds is not defined. Either implement using inheritance or define a map plugin where the method is defined');
     },
 
     /**
      * Get the name of the renderer
      * @method getRendererType
-     * @return {String}
+     * @return {String} The name of the renderer
      * @abstract
      * @since 1.0.0
      */

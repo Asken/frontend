@@ -2,6 +2,11 @@ K.definePlugin('Common.plugin.GoogleMap', function() {
     var me = this;
 
     me.markers = [];
+    //me.bounds = new google.maps.LatLngBounds();
+    me.bounds = new google.maps.LatLngBounds(
+        new google.maps.LatLng(66, -176),
+        new google.maps.LatLng(-41, -177)
+    );
 
     me.test = function() {
         return true;
@@ -11,8 +16,8 @@ K.definePlugin('Common.plugin.GoogleMap', function() {
         var me = this;
 
         var mapOptions = {
-            zoom: 3,
-            center: new google.maps.LatLng(44.1257288, -33.0110524),
+            zoom: 4,
+            //center: new google.maps.LatLng(44.1257288, -33.0110524),
             mapTypeId: google.maps.MapTypeId.ROADMAP
         };
 
@@ -21,6 +26,7 @@ K.definePlugin('Common.plugin.GoogleMap', function() {
             mapOptions);
 
         google.maps.event.addListener(me.renderer, 'click', function(event) {
+            K.log(event.latLng);
             me.addMarker(event.latLng);
         });
 
@@ -40,14 +46,21 @@ K.definePlugin('Common.plugin.GoogleMap', function() {
         });
 
         me.markers.push(marker);
+        //me.bounds.extend(location);
 
         return me;
     };
 
-    me.getLocation = function(lat, lon) {
+    me.fitBounds = function() {
         var me = this;
 
-        return new google.maps.LatLng(lat, lon);
+        me.renderer.fitBounds(me.bounds);
+    };
+
+    me.getLocation = function(lat, lng) {
+        var me = this;
+
+        return new google.maps.LatLng(lat, lng);
     };
 
     me.plotData = function(data) {
@@ -55,7 +68,7 @@ K.definePlugin('Common.plugin.GoogleMap', function() {
             _data = data || me.data || [];
 
         K.each(_data, function(itm) {
-            var location = me.getLocation(itm.lat, itm.lon);
+            var location = me.getLocation(itm.lat, itm.lng);
             me.addMarker(location);
         });
 
@@ -70,6 +83,7 @@ K.definePlugin('Common.plugin.GoogleMap', function() {
         });
 
         me.markers = [];
+        //me.bounds = new google.maps.LatLngBounds();
 
         return me;
     }

@@ -10,11 +10,13 @@ K.define('Map.Start', {
     extend: 'Common.widget.Widget',
 
     requires: [
-        'Common.widget.Widget',
-        'Common.plugin.GoogleMap'
+        'Common.util.Url',
+        'Common.widget.Widget'
     ],
 
     map: null,
+
+    url: null,
 
     init: function(config) {
         var me = this;
@@ -27,23 +29,27 @@ K.define('Map.Start', {
     initMap: function() {
         var me = this;
 
-        $('#loader').hide();
-
+        me.url = K.create('Common.util.Url');
+        var dataUrl = me.url.queryKey.dataUrl || '',
+            dataRoot = me.url.queryKey.dataRoot || '';
+        // ?dataUrl=resources/data/map.json&dataRoot=data
         me.map = K.create('Common.widget.Map', {
-            style: 'width: 100%; height: 400px',
-            autoLoadScripts: false/*),
-            plugins: [
-                'Common.plugin.GoogleMap'    // default so actually doesn't have to be specified. throws an error if no valid library has been loaded
-            ]*/
+            style: 'width: 100%; height: 600px',
+            dataUrl: dataUrl,
+            dataRoot: dataRoot,
+            autoLoadScripts: false,
+            autoFitBounds: true
         }).addTo('#app');
 
-        me.map.plotData([
-            { lat: 55.6750, lon: 12.5687 }
-        ]);
+        /*me.map.plotData([
+            { lat: 55.6750, lng: 12.5687 }
+        ]);*/
 
-        me.map.clear();
+        //me.map.fitBounds();
 
-        K.log('Current map type: ' + me.map.getRendererType());
+        //me.map.clear();
+
+        //K.log('Current map type: ' + me.map.getRendererType());
     }
 });
 
