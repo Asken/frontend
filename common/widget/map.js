@@ -116,6 +116,7 @@ K.define('Common.widget.Map', {
             me.renderMap();
 
             if (!K.isEmpty(me.dataUrl)) {
+                // Oh... cheating. Create a new class to handle connections. It's very simple...
                 var xhr = K.util.Loader.getXhr();
 
                 xhr.open('GET', me.dataUrl, true);
